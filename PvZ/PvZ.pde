@@ -8,6 +8,8 @@ void setup(){
 
 void draw(){
   image(map,0,0);
+  square(260, 90, 75);
+  square(340, 85, 75);
 }
 
 void mouseClicked(){
