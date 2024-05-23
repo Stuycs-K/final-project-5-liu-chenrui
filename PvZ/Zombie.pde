@@ -8,7 +8,7 @@ public class Zombie{
     
   }
   
-  Plant Attack(){
-    return new Plant();
+  void Attack(Plant target){
+  
   }
 }
