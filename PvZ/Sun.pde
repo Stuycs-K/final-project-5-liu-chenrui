@@ -1,12 +1,12 @@
 public class Sun{
-  private float x,y;
+  private int x,y;
   private PImage sprite;
   private boolean clicked;
   
   public Sun(String link){
     sprite = loadImage(link);
     clicked = false;
-    x = 250 + random(730);
+    x = 250 + (int)random(730);
     y = 0;
   }
   
@@ -15,6 +15,22 @@ public class Sun{
       image(sprite, x, y);
       y++;
     }
+  }
+  
+  boolean isClicked(){
+   return clicked; 
+  }
+  
+  int getX(){
+    return x;
+  }
+  
+  int getY(){
+   return y; 
+  }
+  
+  void click(){
+   this.clicked = true; 
   }
   
 }
