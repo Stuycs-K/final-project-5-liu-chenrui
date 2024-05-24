@@ -11,6 +11,7 @@ public class Board{
  public Board(int row, int col){
    rows = row;
    cols = col;
+   plants = new Plant[row][col];
  }
  
  public PVector getWorldPos(float row, float column){
