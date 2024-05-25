@@ -10,6 +10,13 @@ public class Sun{
     y = 0;
   }
   
+  public Sun(int x, int y, String link){
+    sprite = loadImage(link);
+    clicked = false;
+    this.x = x;
+    this.y = y;
+  }
+  
   void display(){
     if(clicked == false){
       image(sprite, x, y);
