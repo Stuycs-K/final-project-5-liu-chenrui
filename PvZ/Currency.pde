@@ -2,7 +2,7 @@ public class Currency{
   private int Sun;
   
   public Currency(){
-   Sun = 0; 
+   Sun = 50; 
   }
   
   int getSun(){
