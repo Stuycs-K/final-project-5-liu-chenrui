@@ -46,16 +46,27 @@ void mouseClicked(){
     //println(col);
   }
   
-  for (Sun S : sunList){
-   println(S.getX());
-   println(S.getY());
-   println(mouseX);
-   println(mouseY);
-   if(mouseX <= S.getX() + 50 && mouseX >= S.getX() && mouseY <= S.getY() + 50 && mouseY >= S.getY()){
-    S.click();
-    system.addSun(50);
+  for(int i = 0; i < sunList.size(); i++){
+    Sun S = sunList.get(i);
+    if(mouseX <= S.getX() + 50 && mouseX >= S.getX() && mouseY <= S.getY() + 50 && mouseY >= S.getY()){
+      S.click();
+      system.addSun(50);
+      sunList.remove(S);
+      i--;
    }
   }
+  
+  //for (Sun S : sunList){
+  // //println(S.getX());
+  // //println(S.getY());
+  // //println(mouseX);
+  // //println(mouseY);
+  // if(mouseX <= S.getX() + 50 && mouseX >= S.getX() && mouseY <= S.getY() + 50 && mouseY >= S.getY()){
+  //  S.click();
+  //  system.addSun(50);
+  //  sunList.remove(S);
+  // }
+  //}
   //println(mouseX);
   //println(mouseY);
 }
