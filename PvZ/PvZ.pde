@@ -3,6 +3,9 @@ Currency system;
 Board board;
 int sunCooldown;
 ArrayList<Sun> sunList;
+PacketUI UI;
+boolean selecting = false;
+Packet selectedPacket;
 
 
 void setup(){
@@ -10,6 +13,7 @@ void setup(){
   map = loadImage("DayMap.png");
   system = new Currency();
   board = new Board(5, 9);
+  UI = new PacketUI();
   
   sunCooldown = 300;
   
@@ -21,7 +25,7 @@ void draw(){
   textSize(40);
   text("Sun: " +  system.getSun(), 0, 40);
   
-  
+  UI.display();
   
   if(sunCooldown > 0){
    sunCooldown--; 
@@ -32,13 +36,20 @@ void draw(){
     sunCooldown = 300;
   }
   
-  for (Sun s : sunList){
+  for(Sun s : sunList){
    s.display();
+  }
+  
+  if(selecting){
+   selectedPacket.display(mouseX, mouseY); 
   }
   
 }
 
 void mouseClicked(){
+  
+  selecting = false;
+  
   if(mouseX >=250 && mouseX <= 980 && mouseY >= 70 && mouseY <= 570){
     int col = (mouseX - 250) / 80;
     int row = (mouseY - 70) / 100;
@@ -55,6 +66,15 @@ void mouseClicked(){
       i--;
    }
   }
+  
+  for(Packet p : UI.getPackets()){
+    if(mouseX <= p.getX() + 50 && mouseX >= p.getX() && mouseY <= p.getY() + 50 && mouseY >= p.getY()){
+      selecting = true;
+      selectedPacket = p;
+    }
+    
+  }
+  
   
   //for (Sun S : sunList){
   // //println(S.getX());

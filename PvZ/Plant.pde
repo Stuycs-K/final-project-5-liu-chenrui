@@ -7,7 +7,7 @@ public class Plant{
   private int range;
   private PImage sprite;
   
-  public Plant(int cost, double refresh, int hp, int dmg, double atkInterval, double range, String link){
+  public Plant(int cost, int refresh, int hp, int dmg, int atkInterval, int range, String link){
     Cost = cost;
     this.refresh = refresh;
     this.HP = hp;
