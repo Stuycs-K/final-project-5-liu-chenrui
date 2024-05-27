@@ -1,10 +1,10 @@
 public class Plant{
   private int Cost;
-  private double refresh;
+  private int refresh;
   private int HP;
   private int Damage;
-  private double AtkInterval;
-  private double range;
+  private int AtkInterval;
+  private int range;
   private PImage sprite;
   
   public Plant(int cost, double refresh, int hp, int dmg, double atkInterval, double range, String link){
@@ -18,7 +18,11 @@ public class Plant{
   }
   
   int getCost(){
-    return 0;
+    return Cost;
+  }
+  
+  double getRefresh(){
+   return refresh; 
   }
   
 }
