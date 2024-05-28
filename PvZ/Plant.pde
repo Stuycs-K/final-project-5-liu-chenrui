@@ -7,6 +7,9 @@ public class Plant{
   private int range;
   private PImage sprite;
   
+  private int r,c;
+  private int x,y;
+  
   public Plant(int cost, int refresh, int hp, int dmg, int atkInterval, int range, String link){
     Cost = cost;
     this.refresh = refresh;
@@ -23,6 +26,15 @@ public class Plant{
   
   double getRefresh(){
    return refresh; 
+  }
+  
+  void display(int x, int y){
+   image(sprite, x, y); 
+  }
+  
+  void setCoord(int r, int c){
+    this.r = r;
+    this.c = c;
   }
   
 }

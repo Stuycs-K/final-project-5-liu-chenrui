@@ -3,6 +3,7 @@ Currency system;
 Board board;
 int sunCooldown;
 ArrayList<Sun> sunList;
+Plant[][] plantList;
 PacketUI UI;
 boolean selecting = false;
 Packet selectedPacket;
@@ -17,6 +18,7 @@ void setup(){
   
   sunCooldown = 300;
   
+  plantList = new Plant[5][9];
   sunList = new ArrayList<Sun>();
 }
 
@@ -26,6 +28,14 @@ void draw(){
   text("Sun: " +  system.getSun(), 0, 40);
   
   UI.display();
+  
+  for(int r = 0; r < plantList.length; r++){
+    for(int c = 0; c < plantList[0].length; c++){
+      if(plantList[r][c] != null){
+        plantList[r][c].display(250, 70);
+      }
+    }
+  }
   
   if(sunCooldown > 0){
    sunCooldown--; 
@@ -48,13 +58,16 @@ void draw(){
 
 void mouseClicked(){
   
-  selecting = false;
+  if(selecting){
+    selecting = false;
+    selectedPacket = null;
+  }
   
-  if(mouseX >=250 && mouseX <= 980 && mouseY >= 70 && mouseY <= 570){
+  if(mouseX >=250 && mouseX <= 980 && mouseY >= 70 && mouseY <= 570 && selecting){
     int col = (mouseX - 250) / 80;
     int row = (mouseY - 70) / 100;
-    //println(row);
-    //println(col);
+    plantList[row][col] = selectedPacket.getPlant();
+    selectedPacket.getPlant().setCoord(row, col);
   }
   
   for(int i = 0; i < sunList.size(); i++){
@@ -69,24 +82,12 @@ void mouseClicked(){
   
   for(Packet p : UI.getPackets()){
     if(mouseX <= p.getX() + 50 && mouseX >= p.getX() && mouseY <= p.getY() + 50 && mouseY >= p.getY()){
-      selecting = true;
-      selectedPacket = p;
+      if(p.getCost() >= system.getSun()){
+        selecting = true;
+        selectedPacket = p;
+      }
     }
     
   }
-  
-  
-  //for (Sun S : sunList){
-  // //println(S.getX());
-  // //println(S.getY());
-  // //println(mouseX);
-  // //println(mouseY);
-  // if(mouseX <= S.getX() + 50 && mouseX >= S.getX() && mouseY <= S.getY() + 50 && mouseY >= S.getY()){
-  //  S.click();
-  //  system.addSun(50);
-  //  sunList.remove(S);
-  // }
-  //}
-  //println(mouseX);
-  //println(mouseY);
+
 }
