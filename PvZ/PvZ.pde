@@ -32,7 +32,7 @@ void draw(){
   for(int r = 0; r < plantList.length; r++){
     for(int c = 0; c < plantList[0].length; c++){
       if(plantList[r][c] != null){
-        plantList[r][c].display(250, 70);
+        plantList[r][c].display(250 + c * 80, 90 + r * 100);
       }
     }
   }
@@ -58,16 +58,20 @@ void draw(){
 
 void mouseClicked(){
   
-  if(selecting){
-    selecting = false;
-    selectedPacket = null;
-  }
-  
   if(mouseX >=250 && mouseX <= 980 && mouseY >= 70 && mouseY <= 570 && selecting){
     int col = (mouseX - 250) / 80;
     int row = (mouseY - 70) / 100;
-    plantList[row][col] = selectedPacket.getPlant();
-    selectedPacket.getPlant().setCoord(row, col);
+    if(plantList[row][col] == null){
+      plantList[row][col] = selectedPacket.getPlant();
+      selectedPacket.getPlant().setCoord(row, col);
+      system.removeSun(selectedPacket.getCost());
+      selecting = false;
+      selectedPacket = null;
+    }
+  }
+  else{
+    selecting = false;
+    selectedPacket = null;
   }
   
   for(int i = 0; i < sunList.size(); i++){
@@ -82,7 +86,7 @@ void mouseClicked(){
   
   for(Packet p : UI.getPackets()){
     if(mouseX <= p.getX() + 50 && mouseX >= p.getX() && mouseY <= p.getY() + 50 && mouseY >= p.getY()){
-      if(p.getCost() >= system.getSun()){
+      if(p.getCost() <= system.getSun()){
         selecting = true;
         selectedPacket = p;
       }
