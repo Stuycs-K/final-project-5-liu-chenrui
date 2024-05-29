@@ -24,10 +24,14 @@ public class Packet{
  
  void display(){
   image(packetImage, x, y);
+  if(currentCD > 0){
+  textSize(20);
+  text(currentCD / 60 + 1, x + 20, y);
+  }
  }
  
  void display(int x, int y){
-  image(packetImage, x, y); 
+  image(packetImage, x, y);
  }
  
  void onCooldown(){
