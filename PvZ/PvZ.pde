@@ -4,6 +4,7 @@ Board board;
 
 ArrayList<Sun> sunList;
 Plant[][] plantList;
+ArrayList<Zombie> zombieList;
 
 PacketUI UI;
 Packet selectedPacket;
@@ -22,6 +23,9 @@ void setup(){
   
   sunCooldown = 300;
   sunList = new ArrayList<Sun>();
+  
+  zombieList = new ArrayList<Zombie>();
+  zombieList.add(new NormalZombie());
 }
 
 void draw(){
@@ -39,6 +43,14 @@ void draw(){
     for(int c = 0; c < plantList[0].length; c++){
       if(plantList[r][c] != null){
         plantList[r][c].display(250 + c * 80, 90 + r * 100);
+        for(Zombie z : zombieList){
+          if(z.getX() == plantList[r][c].getX() + 50 && z.getY() <= plantList[r][c].getY() + 80 && z.getY() >= plantList[r][c].getY()){
+            z.Attack(plantList[r][c]);
+          }
+          else{
+           z.Move(); 
+          }
+        }
       }
     }
   }
