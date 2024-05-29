@@ -4,7 +4,7 @@ public class PacketUI{
   public PacketUI(){
     packetList = new ArrayList<Packet>();
     
-    packetList.add(new Packet("Sunflower_seed_packet.jpg", new Sunflower(), "Sunflower.png", 0, 80, 8, 50));
+    packetList.add(new Packet("Sunflower_seed_packet.jpg", new Sunflower(), 0, 80, 8));
   }
   
   void display(){

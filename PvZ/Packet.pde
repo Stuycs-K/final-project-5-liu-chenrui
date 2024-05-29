@@ -1,20 +1,17 @@
 public class Packet{
  private PImage packetImage;
- private PImage plantImage;
- private boolean onCooldown;
  private int cooldown;
- private int cost;
  private int x,y;
  private Plant plant;
  
- public Packet(String link, Plant plant, String plantLink, int x, int y, int CD, int cost){
+ private int currentCD = 0;
+ 
+ public Packet(String link, Plant plant, int x, int y, int CD){
    packetImage = loadImage(link);
-   plantImage = loadImage(plantLink);
-   this.cost = cost;
    this.plant = plant;
    this.x = x;
    this.y = y;
-   this.cooldown = CD;
+   this.cooldown = CD * 60;
  }
  
  int getX(){
@@ -30,18 +27,25 @@ public class Packet{
  }
  
  void display(int x, int y){
-  image(plantImage, x, y);
+  image(packetImage, x, y); 
  }
  
- int getCost(){
-  return cost; 
+ void onCooldown(){
+   if(currentCD > 0){
+     this.currentCD--;
+   }
+ }
+ 
+ void resetCooldown(){
+  currentCD = cooldown; 
+ }
+ 
+ int getCooldown(){
+  return this.currentCD; 
  }
  
  Plant getPlant(){
   return plant; 
  }
  
- void place(){
-   
- }
 }

@@ -1,12 +1,15 @@
 PImage map;
 Currency system;
 Board board;
-int sunCooldown;
+
 ArrayList<Sun> sunList;
 Plant[][] plantList;
+
 PacketUI UI;
-boolean selecting = false;
 Packet selectedPacket;
+
+int sunCooldown;
+boolean selecting = false;
 
 
 void setup(){
@@ -14,11 +17,10 @@ void setup(){
   map = loadImage("DayMap.png");
   system = new Currency();
   board = new Board(5, 9);
+  plantList = board.getPlants();
   UI = new PacketUI();
   
   sunCooldown = 300;
-  
-  plantList = new Plant[5][9];
   sunList = new ArrayList<Sun>();
 }
 
@@ -28,6 +30,10 @@ void draw(){
   text("Sun: " +  system.getSun(), 0, 40);
   
   UI.display();
+  
+  for(Packet p : UI.getPackets()){
+   p.onCooldown(); 
+  }
   
   for(int r = 0; r < plantList.length; r++){
     for(int c = 0; c < plantList[0].length; c++){
@@ -51,7 +57,7 @@ void draw(){
   }
   
   if(selecting){
-   selectedPacket.display(mouseX, mouseY); 
+   selectedPacket.getPlant().display(mouseX, mouseY); 
   }
   
 }
@@ -64,8 +70,9 @@ void mouseClicked(){
     if(plantList[row][col] == null){
       plantList[row][col] = selectedPacket.getPlant();
       selectedPacket.getPlant().setCoord(row, col);
-      system.removeSun(selectedPacket.getCost());
+      system.removeSun(selectedPacket.getPlant().getCost());
       selecting = false;
+      selectedPacket.resetCooldown();
       selectedPacket = null;
     }
   }
@@ -85,8 +92,8 @@ void mouseClicked(){
   }
   
   for(Packet p : UI.getPackets()){
-    if(mouseX <= p.getX() + 50 && mouseX >= p.getX() && mouseY <= p.getY() + 50 && mouseY >= p.getY()){
-      if(p.getCost() <= system.getSun()){
+    if(mouseX <= p.getX() + 50 && mouseX >= p.getX() && mouseY <= p.getY() + 50 && mouseY >= p.getY() && p.getCooldown() == 0){
+      if(p.getPlant().getCost() <= system.getSun()){
         selecting = true;
         selectedPacket = p;
       }
