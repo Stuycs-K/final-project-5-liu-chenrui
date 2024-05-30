@@ -4,20 +4,20 @@ public class Zombie{
   private int Defense;
   private int Damage;
   private PImage sprite;
-  private int r,c;
+  private int r;
   private int x,y;
   private boolean eating = false;
+  private int eatCD = 600;
   
-  public Zombie(int hp, int speed, int def, int dmg, String link, int r, int c){
+  public Zombie(int hp, int speed, int def, int dmg, String link, int r){
     HP = hp;
     Speed = speed;
     Defense = def;
     Damage = dmg;
     
     this.r = r;
-    this.c = c;
     this.x = 1000;
-    this.y = 70 + r * 105;
+    this.y = 75 + r * 105;
     
     sprite = loadImage(link);
   }
@@ -30,7 +30,21 @@ public class Zombie{
   }
   
   void Attack(Plant target){
-    
+    eating = true;
+    if(eatCD == 0){
+      target.loseHP(Damage);
+      eatCD = 600;
+    }
+  }
+  
+  void resetEatCD(){
+    if(eatCD > 0){
+      eatCD--; 
+    }
+  }
+  
+  void setEating(boolean e){
+    eating = e;    
   }
   
   //void setPos(int x, int y){
@@ -50,7 +64,4 @@ public class Zombie{
    return r; 
   }
   
-  int getColumn(){
-   return c; 
-  }
 }

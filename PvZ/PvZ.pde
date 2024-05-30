@@ -43,16 +43,26 @@ void draw(){
     for(int c = 0; c < plantList[0].length; c++){
       if(plantList[r][c] != null){
         plantList[r][c].display(250 + c * 80, 90 + r * 100);
-        for(Zombie z : zombieList){
-          if(z.getX() == plantList[r][c].getX() + 50 && z.getY() <= plantList[r][c].getY() + 80 && z.getY() >= plantList[r][c].getY()){
-            z.Attack(plantList[r][c]);
-          }
-          else{
-           z.Move(); 
-          }
+        if(plantList[r][c].getHP() <= 0){
+          plantList[r][c] = null; 
         }
       }
     }
+  }
+  
+  for(Zombie z : zombieList){
+    z.resetEatCD();
+    for(int r = 0; r < plantList.length; r++){
+      for(int c = 0; c < plantList[0].length; c++){
+        if(plantList[r][c] != null && z.getRow() == r && z.getX() <= plantList[r][c].getX() + 40 && z.getY() >= plantList[r][c].getY()){
+          z.Attack(plantList[r][c]);
+        }
+        else{
+         z.setEating(false); 
+        }
+      }
+    }
+    z.Move();
   }
   
   if(sunCooldown > 0){

@@ -35,6 +35,8 @@ public class Plant{
   void setCoord(int r, int c){
     this.r = r;
     this.c = c;
+    this.x = 250 + c * 80;
+    this.y = 70 + r * 100;
   }
   
   int getX(){
@@ -45,4 +47,11 @@ public class Plant{
    return y; 
   }
   
+  int getHP(){
+   return HP; 
+  }
+  
+  void loseHP(int hp){
+   this.HP -= hp; 
+  }
 }
