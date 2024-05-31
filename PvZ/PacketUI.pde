@@ -1,19 +1,15 @@
 public class PacketUI{
-  private ArrayList<Packet> packetList;
+  private SunflowerPacket SF;
   
   public PacketUI(){
-    packetList = new ArrayList<Packet>();
-    
-    packetList.add(new Packet("Sunflower_seed_packet.jpg", new Sunflower(), 0, 80, 8));
+    SF = new SunflowerPacket();
   }
   
   void display(){
-    for(Packet p : packetList){
-     p.display(); 
-    }
+    SF.display();
   }
   
-  ArrayList<Packet> getPackets(){
-   return packetList; 
+  SunflowerPacket getSFP(){
+   return SF; 
   }
 }

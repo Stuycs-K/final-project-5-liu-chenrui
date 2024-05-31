@@ -2,11 +2,14 @@ PImage map;
 Currency system;
 Board board;
 
-ArrayList<Sun> sunList;
+ArrayList<Sun> sunList = new ArrayList<Sun>();
 Plant[][] plantList;
-ArrayList<Zombie> zombieList;
+ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
+
+ArrayList<Sunflower> sunflowerList = new ArrayList<Sunflower>();
 
 PacketUI UI;
+Plant selectedPlant;
 Packet selectedPacket;
 
 int sunCooldown;
@@ -22,9 +25,8 @@ void setup(){
   UI = new PacketUI();
   
   sunCooldown = 300;
-  sunList = new ArrayList<Sun>();
   
-  zombieList = new ArrayList<Zombie>();
+  plantList = board.getPlants();
   zombieList.add(new NormalZombie());
 }
 
@@ -35,9 +37,7 @@ void draw(){
   
   UI.display();
   
-  for(Packet p : UI.getPackets()){
-   p.onCooldown(); 
-  }
+  UI.getSFP().onCooldown();
   
   for(int r = 0; r < plantList.length; r++){
     for(int c = 0; c < plantList[0].length; c++){
@@ -68,6 +68,7 @@ void draw(){
     if(row < 0){
      row = 0; 
     }
+    
     if(plantList[row][col] != null){
       println("row: " + row);
       println("col: " + col);
@@ -77,17 +78,6 @@ void draw(){
       z.setEating(false);
     }
     z.Move();
-    //for(int r = 0; r < plantList.length; r++){
-    //  for(int c = 0; c < plantList[0].length; c++){
-    //    if(plantList[r][c] != null && z.getRow() == r && z.getX() <= plantList[r][c].getX() + 40 && z.getY() >= plantList[r][c].getY()){
-    //      z.Attack(plantList[r][c]);
-    //    }
-    //    else{
-    //     z.setEating(false); 
-    //    }
-    //  }
-    //}
-    //z.Move();
   }
   
   if(sunCooldown > 0){
@@ -104,7 +94,7 @@ void draw(){
   }
   
   if(selecting){
-   selectedPacket.getPlant().display(mouseX, mouseY); 
+   selectedPlant.display(mouseX, mouseY); 
   }
   
 }
@@ -115,17 +105,19 @@ void mouseClicked(){
     int col = (mouseX - 250) / 80;
     int row = (mouseY - 70) / 100;
     if(plantList[row][col] == null){
-      plantList[row][col] = selectedPacket.getPlant();
-      selectedPacket.getPlant().setCoord(row, col);
-      system.removeSun(selectedPacket.getPlant().getCost());
+      plantList[row][col] = selectedPlant;
+      selectedPlant.setCoord(row, col);
+      system.removeSun(selectedPlant.getCost());
       selecting = false;
       selectedPacket.resetCooldown();
       selectedPacket = null;
+      selectedPlant = null;
     }
   }
   else{
     selecting = false;
     selectedPacket = null;
+    selectedPlant = null;
   }
   
   for(int i = 0; i < sunList.size(); i++){
@@ -138,14 +130,15 @@ void mouseClicked(){
    }
   }
   
-  for(Packet p : UI.getPackets()){
-    if(mouseX <= p.getX() + 50 && mouseX >= p.getX() && mouseY <= p.getY() + 50 && mouseY >= p.getY() && p.getCooldown() == 0){
-      if(p.getPlant().getCost() <= system.getSun()){
-        selecting = true;
-        selectedPacket = p;
-      }
+  SunflowerPacket SunPacket = UI.getSFP();
+  if(mouseX <= SunPacket.getX() + 50 && mouseX >= SunPacket.getX() && mouseY <= SunPacket.getY() + 50 && mouseY >= SunPacket.getY() && SunPacket.getCooldown() == 0){
+    Sunflower sunFlower = SunPacket.genSunflower();
+    if(sunFlower.getCost() <= system.getSun()){
+      selecting = true;
+      selectedPlant = sunFlower;
+      selectedPacket = SunPacket;
+      sunflowerList.add(sunFlower);
     }
-    
   }
 
 }
