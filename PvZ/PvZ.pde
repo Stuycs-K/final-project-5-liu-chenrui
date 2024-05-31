@@ -52,17 +52,42 @@ void draw(){
   
   for(Zombie z : zombieList){
     z.resetEatCD();
-    for(int r = 0; r < plantList.length; r++){
-      for(int c = 0; c < plantList[0].length; c++){
-        if(plantList[r][c] != null && z.getRow() == r && z.getX() <= plantList[r][c].getX() + 40 && z.getY() >= plantList[r][c].getY()){
-          z.Attack(plantList[r][c]);
-        }
-        else{
-         z.setEating(false); 
-        }
-      }
+    int zX = z.getX();
+    int zY = z.getY();
+    int col = (zX - 250) / 80;
+    if(col > 8){
+     col = 8; 
+    }
+    if(col < 0){
+     col = 0; 
+    }
+    int row = (zY - 70) / 100;
+    if(row > 4){
+     row = 4; 
+    }
+    if(row < 0){
+     row = 0; 
+    }
+    if(plantList[row][col] != null){
+      println("row: " + row);
+      println("col: " + col);
+      z.Attack(plantList[row][col]);
+    }
+    else{
+      z.setEating(false);
     }
     z.Move();
+    //for(int r = 0; r < plantList.length; r++){
+    //  for(int c = 0; c < plantList[0].length; c++){
+    //    if(plantList[r][c] != null && z.getRow() == r && z.getX() <= plantList[r][c].getX() + 40 && z.getY() >= plantList[r][c].getY()){
+    //      z.Attack(plantList[r][c]);
+    //    }
+    //    else{
+    //     z.setEating(false); 
+    //    }
+    //  }
+    //}
+    //z.Move();
   }
   
   if(sunCooldown > 0){

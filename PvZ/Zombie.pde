@@ -7,7 +7,7 @@ public class Zombie{
   private int r;
   private int x,y;
   private boolean eating = false;
-  private int eatCD = 600;
+  private int eatCD = 30;
   
   public Zombie(int hp, int speed, int def, int dmg, String link, int r){
     HP = hp;
@@ -16,8 +16,8 @@ public class Zombie{
     Damage = dmg;
     
     this.r = r;
-    this.x = 1000;
-    this.y = 75 + r * 105;
+    this.x = 980;
+    this.y = 70 + r * 100;
     
     sprite = loadImage(link);
   }
@@ -33,7 +33,7 @@ public class Zombie{
     eating = true;
     if(eatCD == 0){
       target.loseHP(Damage);
-      eatCD = 600;
+      eatCD = 30;
     }
   }
   
