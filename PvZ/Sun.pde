@@ -17,6 +17,14 @@ public class Sun{
     this.y = y;
   }
   
+  void genSunDisplay(){
+    if(clicked == false && y < y + 50){
+      image(sprite, x, y);
+      x--;
+      y++;
+    }
+  }
+  
   void display(){
     if(clicked == false){
       image(sprite, x, y);

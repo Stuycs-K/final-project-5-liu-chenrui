@@ -51,6 +51,10 @@ public class Plant{
    return HP; 
   }
   
+  int getInterval(){
+   return AtkInterval; 
+  }
+  
   void loseHP(int hp){
    this.HP -= hp; 
   }

@@ -70,8 +70,8 @@ void draw(){
     }
     
     if(plantList[row][col] != null){
-      println("row: " + row);
-      println("col: " + col);
+      //println("row: " + row);
+      //println("col: " + col);
       z.Attack(plantList[row][col]);
     }
     else{
