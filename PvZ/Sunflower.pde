@@ -1,15 +1,26 @@
 public class Sunflower extends Plant{
-  int currentCD = 5;
+  int currentCD = 5 * 60;
+  boolean ready = false;
   
   public Sunflower(){
     super(50, 8, 6, 0, 24, 0, "Sunflower.png");
   }
   
-  void generateSun(){
+  Sun generateSun(){
     if(currentCD == 0){
       Sun s = new Sun(getX(), getY(), "Sun.png");
-      s.genSunDisplay();
+      //s.genSunDisplay();
+      currentCD = 5 * 60;
+      return s;
     }
+    return null;
+  }
+  
+  void onCooldown(){
+     if(currentCD > 0){
+       currentCD--;
+       ready = false;
+     }
   }
   
 }

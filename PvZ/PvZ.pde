@@ -3,6 +3,7 @@ Currency system;
 Board board;
 
 ArrayList<Sun> sunList = new ArrayList<Sun>();
+ArrayList<Sun> genSunList = new ArrayList<Sun>();
 Plant[][] plantList;
 ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
 
@@ -47,6 +48,18 @@ void draw(){
           plantList[r][c] = null; 
         }
       }
+    }
+  }
+  
+  for(Sunflower sf : sunflowerList){
+    Sun s = sf.generateSun();
+    sf.onCooldown();
+    genSunList.add(s);
+  }
+  
+  for(Sun s : genSunList){
+    if(s != null){
+      s.genSunDisplay(); 
     }
   }
   
@@ -126,6 +139,16 @@ void mouseClicked(){
       S.click();
       system.addSun(50);
       sunList.remove(S);
+      i--;
+   }
+  }
+  
+  for(int i = 0; i < genSunList.size(); i++){
+    Sun S = genSunList.get(i);
+    if(S != null && mouseX <= S.getX() + 50 && mouseX >= S.getX() && mouseY <= S.getY() + 50 && mouseY >= S.getY()){
+      S.click();
+      system.addSun(50);
+      genSunList.remove(S);
       i--;
    }
   }

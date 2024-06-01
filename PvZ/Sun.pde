@@ -1,5 +1,6 @@
 public class Sun{
   private int x,y;
+  private int limit;
   private PImage sprite;
   private boolean clicked;
   
@@ -15,13 +16,15 @@ public class Sun{
     clicked = false;
     this.x = x;
     this.y = y;
+    limit = y + 50;
   }
   
   void genSunDisplay(){
-    if(clicked == false && y < y + 50){
+    if(clicked == false){
       image(sprite, x, y);
-      x--;
-      y++;
+      if(y < limit){
+        y++;
+      }
     }
   }
   
