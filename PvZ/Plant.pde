@@ -48,6 +48,10 @@ public class Plant{
     this.y = 70 + r * 100;
   }
   
+  void setSprite(String link){
+    sprite = loadImage(link);
+  }
+  
   int getR(){
     return r; 
   }

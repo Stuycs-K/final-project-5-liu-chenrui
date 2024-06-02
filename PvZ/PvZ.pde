@@ -13,6 +13,7 @@ ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
 
 ArrayList<Sunflower> sunflowerList = new ArrayList<Sunflower>();
 ArrayList<Peashooter> peashooterList = new ArrayList<Peashooter>();
+ArrayList<Walnut> walnutList = new ArrayList<Walnut>();
 
 PacketUI UI;
 Plant selectedPlant;
@@ -45,6 +46,7 @@ void draw(){
   
   UI.getSFP().onCooldown();
   UI.getPSP().onCooldown();
+  UI.getWP().onCooldown();
   
   for(int r = 0; r < plantList.length; r++){
     for(int c = 0; c < plantList[0].length; c++){
@@ -93,6 +95,15 @@ void draw(){
   for(Sun s : genSunList){
     if(s != null){
       s.genSunDisplay(); 
+    }
+  }
+  
+  for(Walnut w : walnutList){
+    if(w.getHP() <= 48 && w.getHP() > 24){
+      w.setSprite("HurtWalnut.png"); 
+    }
+    else if(w.getHP() <= 24){
+      w.setSprite("DyingWalnut.png"); 
     }
   }
   
@@ -212,6 +223,17 @@ void mouseClicked(){
       selectedPlant = peaShooter;
       selectedPacket = PeaPacket;
       peashooterList.add(peaShooter);
+    }
+  }
+
+  WalnutPacket WP = UI.getWP();
+  if(mouseX <= WP.getX() + 80 && mouseX >= WP.getX() && mouseY <= WP.getY() + 80 && mouseY >= WP.getY() && WP.getCooldown() == 0){
+    Walnut W = WP.genWalnut();
+    if(W.getCost() <= system.getSun()){
+      selecting = true;
+      selectedPlant = W;
+      selectedPacket = WP;
+      walnutList.add(W);
     }
   }
 
