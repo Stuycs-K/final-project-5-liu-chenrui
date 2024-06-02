@@ -7,8 +7,8 @@ public class Zombie{
   private int r;
   private int x,y;
   private boolean eating = false;
-  private int eatCD = 30;
-  private int walkCD = 15;
+  private int eatCD = 60;
+  private int walkCD = 30;
   
   public Zombie(int hp, int speed, int def, int dmg, String link, int r){
     HP = hp;

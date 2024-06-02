@@ -22,6 +22,9 @@ Packet selectedPacket;
 int sunCooldown;
 boolean selecting = false;
 
+int waveCooldown = 10 * 60;
+int numZomb = 1;
+
 
 void setup(){
   size(1400,600);
@@ -34,7 +37,6 @@ void setup(){
   sunCooldown = 300;
   
   plantList = board.getPlants();
-  zombieList.add(new NormalZombie());
 }
 
 void draw(){
@@ -47,6 +49,18 @@ void draw(){
   UI.getSFP().onCooldown();
   UI.getPSP().onCooldown();
   UI.getWP().onCooldown();
+  
+  if(waveCooldown == 0){
+    for(int i = 0; i < numZomb; i++){
+      zombieList.add(new NormalZombie());
+    }
+    waveCooldown = 10 * 60;
+    numZomb++;
+  }
+  else if(waveCooldown > 0){
+    waveCooldown--;
+  }
+  
   
   for(int r = 0; r < plantList.length; r++){
     for(int c = 0; c < plantList[0].length; c++){
@@ -78,7 +92,7 @@ void draw(){
     if(p != null && p.getActive()){
       p.display();
       for(Zombie z : zombieList){
-        if(z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
+        if(p.getActive() && z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
           p.damage(z);
           p.setActive(false);
         }
@@ -87,9 +101,11 @@ void draw(){
   }
   
   for(Sunflower sf : sunflowerList){
-    Sun s = sf.generateSun();
-    sf.onCooldown();
-    genSunList.add(s);
+    if(sf.getHP() > 0){
+      Sun s = sf.generateSun();
+      sf.onCooldown();
+      genSunList.add(s);
+    }
   }
   
   for(Sun s : genSunList){
