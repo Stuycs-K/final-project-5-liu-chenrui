@@ -1,5 +1,5 @@
 public class Peashooter extends Plant{
-  int currentCD = 5 * 60;
+  double currentCD = 1.5 * 60;
   
   public Peashooter(){
     super(100, 7, 6, 1, 1, 9, "Peashooter.png");
@@ -7,6 +7,7 @@ public class Peashooter extends Plant{
   
   Pea Shoot(){
     if(currentCD == 0 && getActive()){
+      currentCD = 1.5 * 60;
       return new Pea(getX() + 40, getY() + 40);
     }
     return null;
@@ -14,7 +15,7 @@ public class Peashooter extends Plant{
   
   void onCooldown(){
      if(currentCD > 0){
-       currentCD--;
+       currentCD -= 0.5;
      }
   }
 }

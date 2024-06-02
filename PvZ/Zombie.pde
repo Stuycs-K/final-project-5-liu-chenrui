@@ -8,7 +8,7 @@ public class Zombie{
   private int x,y;
   private boolean eating = false;
   private int eatCD = 30;
-  private int walkCD = 60;
+  private int walkCD = 15;
   
   public Zombie(int hp, int speed, int def, int dmg, String link, int r){
     HP = hp;
@@ -26,7 +26,8 @@ public class Zombie{
   void Move(){
     image(sprite, x, y);
     if(x > 250 && !eating && walkCD == 0){
-      x -= Speed; 
+      x -= Speed;
+      walkCD = 10;
     }
   }
   
@@ -35,6 +36,12 @@ public class Zombie{
     if(eatCD == 0){
       target.loseHP(Damage);
       eatCD = 30;
+    }
+  }
+  
+  void resetWalkCD(){
+    if(walkCD > 0){
+      walkCD--;
     }
   }
   
@@ -50,6 +57,10 @@ public class Zombie{
   
   void removeHP(int hp){
     this.HP -= hp;
+  }
+  
+  int getHP(){
+    return HP; 
   }
   
   //void setPos(int x, int y){

@@ -58,24 +58,30 @@ void draw(){
   }
   
   for(Peashooter ps : peashooterList){
+    ps.onCooldown();
     for(Zombie z : zombieList){
-      println("Pea: " + ps.getR());
-      println("Zombie: " + z.getRow());
-      if(ps.getR() == z.getRow()){
+      //println("Pea: " + ps.getR());
+      //println("Zombie: " + z.getRow());
+      if(ps.getR() == z.getRow() && z.getHP() > 0){
         Pea p = ps.Shoot();
-        ps.onCooldown();
-        PeaList.add(p);
+        if(p != null){
+          p.setActive(true);
+          PeaList.add(p);
+        }
       }
     }
   }
   
   for(Pea p : PeaList){
-    if(p != null){
+    if(p != null && p.getActive()){
       p.display();
+      for(Zombie z : zombieList){
+        if(z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
+          p.damage(z);
+          p.setActive(false);
+        }
+      }
     }
-    //for(Zombie z : zombieList){
-    //  if(p
-    //}
   }
   
   for(Sunflower sf : sunflowerList){
@@ -91,33 +97,36 @@ void draw(){
   }
   
   for(Zombie z : zombieList){
-    z.resetEatCD();
-    int zX = z.getX();
-    int zY = z.getY();
-    int col = (zX - 250) / 80;
-    if(col > 8){
-     col = 8; 
+    if(z.getHP() > 0){
+      z.resetWalkCD();
+      z.resetEatCD();
+      int zX = z.getX();
+      int zY = z.getY();
+      int col = (zX - 250) / 80;
+      if(col > 8){
+       col = 8; 
+      }
+      if(col < 0){
+       col = 0; 
+      }
+      int row = (zY - 70) / 100;
+      if(row > 4){
+       row = 4; 
+      }
+      if(row < 0){
+       row = 0; 
+      }
+      
+      if(plantList[row][col] != null){
+        //println("row: " + row);
+        //println("col: " + col);
+        z.Attack(plantList[row][col]);
+      }
+      else{
+        z.setEating(false);
+      }
+      z.Move();
     }
-    if(col < 0){
-     col = 0; 
-    }
-    int row = (zY - 70) / 100;
-    if(row > 4){
-     row = 4; 
-    }
-    if(row < 0){
-     row = 0; 
-    }
-    
-    if(plantList[row][col] != null){
-      //println("row: " + row);
-      //println("col: " + col);
-      z.Attack(plantList[row][col]);
-    }
-    else{
-      z.setEating(false);
-    }
-    z.Move();
   }
   
   if(sunCooldown > 0){
