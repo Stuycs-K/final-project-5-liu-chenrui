@@ -3,7 +3,7 @@ public class Sunflower extends Plant{
   boolean ready = false;
   
   public Sunflower(){
-    super(50, 8, 6, 0, 24, 0, "Sunflower.png");
+    super(50, 7, 6, 0, 24, 0, "Sunflower.png");
   }
   
   Sun generateSun(){
