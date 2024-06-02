@@ -1,9 +1,9 @@
 public class PeashooterPacket extends Packet{
   public PeashooterPacket(){
-    super("PeashooterPacket.png", 0, 80, 8);
+    super("PeashooterPacket.png", 0, 150, 8);
   }
   
-  Peashooter genSunflower(){
+  Peashooter genPeashooter(){
    return new Peashooter(); 
   }
 }

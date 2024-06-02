@@ -5,9 +5,14 @@ Board board;
 ArrayList<Sun> sunList = new ArrayList<Sun>();
 ArrayList<Sun> genSunList = new ArrayList<Sun>();
 Plant[][] plantList;
+
+ArrayList<Pea> PeaList = new ArrayList<Pea>();
+
+
 ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
 
 ArrayList<Sunflower> sunflowerList = new ArrayList<Sunflower>();
+ArrayList<Peashooter> peashooterList = new ArrayList<Peashooter>();
 
 PacketUI UI;
 Plant selectedPlant;
@@ -39,6 +44,7 @@ void draw(){
   UI.display();
   
   UI.getSFP().onCooldown();
+  UI.getPSP().onCooldown();
   
   for(int r = 0; r < plantList.length; r++){
     for(int c = 0; c < plantList[0].length; c++){
@@ -49,6 +55,27 @@ void draw(){
         }
       }
     }
+  }
+  
+  for(Peashooter ps : peashooterList){
+    for(Zombie z : zombieList){
+      println("Pea: " + ps.getR());
+      println("Zombie: " + z.getRow());
+      if(ps.getR() == z.getRow()){
+        Pea p = ps.Shoot();
+        ps.onCooldown();
+        PeaList.add(p);
+      }
+    }
+  }
+  
+  for(Pea p : PeaList){
+    if(p != null){
+      p.display();
+    }
+    //for(Zombie z : zombieList){
+    //  if(p
+    //}
   }
   
   for(Sunflower sf : sunflowerList){
@@ -120,12 +147,16 @@ void mouseClicked(){
     if(plantList[row][col] == null){
       plantList[row][col] = selectedPlant;
       selectedPlant.setCoord(row, col);
+      selectedPlant.setActive(true);
       system.removeSun(selectedPlant.getCost());
       selecting = false;
       selectedPacket.resetCooldown();
       selectedPacket = null;
       selectedPlant = null;
     }
+  else{
+    
+  }
   }
   else{
     selecting = false;
@@ -161,6 +192,17 @@ void mouseClicked(){
       selectedPlant = sunFlower;
       selectedPacket = SunPacket;
       sunflowerList.add(sunFlower);
+    }
+  }
+  
+  PeashooterPacket PeaPacket = UI.getPSP();
+  if(mouseX <= PeaPacket.getX() + 80 && mouseX >= PeaPacket.getX() && mouseY <= PeaPacket.getY() + 80 && mouseY >= PeaPacket.getY() && PeaPacket.getCooldown() == 0){
+    Peashooter peaShooter = PeaPacket.genPeashooter();
+    if(peaShooter.getCost() <= system.getSun()){
+      selecting = true;
+      selectedPlant = peaShooter;
+      selectedPacket = PeaPacket;
+      peashooterList.add(peaShooter);
     }
   }
 

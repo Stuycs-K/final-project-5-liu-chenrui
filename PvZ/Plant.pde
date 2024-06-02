@@ -6,6 +6,7 @@ public class Plant{
   private int AtkInterval;
   private int range;
   private PImage sprite;
+  private boolean active = false;
   
   private int r,c;
   private int x,y;
@@ -28,6 +29,14 @@ public class Plant{
    return refresh; 
   }
   
+  void setActive(boolean b){
+    active = b;
+  }
+  
+  boolean getActive(){
+    return active; 
+  }
+  
   void display(int x, int y){
    image(sprite, x, y); 
   }
@@ -37,6 +46,14 @@ public class Plant{
     this.c = c;
     this.x = 250 + c * 80;
     this.y = 70 + r * 100;
+  }
+  
+  int getR(){
+    return r; 
+  }
+  
+  int getC(){
+    return c;
   }
   
   int getX(){
