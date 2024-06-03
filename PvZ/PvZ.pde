@@ -15,6 +15,8 @@ ArrayList<Sunflower> sunflowerList = new ArrayList<Sunflower>();
 ArrayList<Peashooter> peashooterList = new ArrayList<Peashooter>();
 ArrayList<Walnut> walnutList = new ArrayList<Walnut>();
 
+ArrayList<Lawnmower> lawnmowerList = new ArrayList<Lawnmower>();
+
 PacketUI UI;
 Plant selectedPlant;
 Packet selectedPacket;
@@ -37,6 +39,12 @@ void setup(){
   sunCooldown = 300;
   
   plantList = board.getPlants();
+  
+  lawnmowerList.add(new Lawnmower(150, 70));
+  lawnmowerList.add(new Lawnmower(150, 170));
+  lawnmowerList.add(new Lawnmower(150, 270));
+  lawnmowerList.add(new Lawnmower(150, 370));
+  lawnmowerList.add(new Lawnmower(150, 470));
 }
 
 void draw(){
@@ -44,6 +52,10 @@ void draw(){
   fill(255);
   textSize(40);
   text("Sun: " +  system.getSun(), 0, 40);
+  
+  for(Lawnmower LM : lawnmowerList){
+    LM.display();
+  }
   
   fill(#6e3316);
   rect(0, 50, 120, 300);
