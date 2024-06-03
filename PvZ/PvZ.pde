@@ -41,8 +41,14 @@ void setup(){
 
 void draw(){
   image(map,0,0);
+  fill(255);
   textSize(40);
   text("Sun: " +  system.getSun(), 0, 40);
+  
+  fill(#6e3316);
+  rect(0, 50, 120, 300);
+  
+  fill(255);
   
   UI.display();
   
@@ -92,7 +98,7 @@ void draw(){
     if(p != null && p.getActive()){
       p.display();
       for(Zombie z : zombieList){
-        if(p.getActive() && z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
+        if(z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
           p.damage(z);
           p.setActive(false);
         }
@@ -124,6 +130,9 @@ void draw(){
   }
   
   for(Zombie z : zombieList){
+    if(z.getHP() > 0 && z.getHP() <= 4){
+      z.setSprite("injuredNormalZombie.png"); 
+    }
     if(z.getHP() > 0){
       z.resetWalkCD();
       z.resetEatCD();

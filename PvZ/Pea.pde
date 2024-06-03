@@ -36,7 +36,9 @@ public class Pea{
   }
   
   void damage(Zombie z){
-    z.removeHP(1);
+    if(active){
+      z.removeHP(1);
+    }
   }
   
   void setActive(boolean b){

@@ -51,6 +51,10 @@ public class Zombie{
     }
   }
   
+  void setSprite(String link){
+    sprite = loadImage(link);
+  }
+  
   void setEating(boolean e){
     eating = e;    
   }

@@ -8,7 +8,7 @@ public class Peashooter extends Plant{
   Pea Shoot(){
     if(currentCD == 0 && getActive()){
       currentCD = 1.5 * 60;
-      return new Pea(getX() + 40, getY() + 40);
+      return new Pea(getX() + 40, getY() + 30);
     }
     return null;
   }

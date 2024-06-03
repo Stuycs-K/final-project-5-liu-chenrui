@@ -24,7 +24,7 @@ public class Packet{
   image(packetImage, x, y);
   if(currentCD > 0){
     textSize(20);
-    text(currentCD / 60 + 1, x + 20, y);
+    text(currentCD / 60 + 1, x + 70, y + 40);
   }
  }
  

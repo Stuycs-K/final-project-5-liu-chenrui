@@ -1,6 +1,6 @@
 public class WalnutPacket extends Packet{
   public WalnutPacket(){
-    super("WalnutPacket.png", 0, 230, 30);
+    super("WalnutPacket.png", 20, 230, 30);
   }
   
   Walnut genWalnut(){
