@@ -55,6 +55,13 @@ void draw(){
   
   for(Lawnmower LM : lawnmowerList){
     LM.display();
+    if(LM.getActive()){
+      for(Zombie z : zombieList){
+        if(z.getRow() == LM.getRow() && LM.getX() >= z.getX()){
+          z.removeHP(999);
+        }
+      }
+    }
   }
   
   fill(#6e3316);
@@ -174,6 +181,9 @@ void draw(){
         z.setEating(false);
       }
       z.Move();
+    }
+    if(z.getX() <= 250){
+       lawnmowerList.get(z.getRow()).setActive();
     }
   }
   

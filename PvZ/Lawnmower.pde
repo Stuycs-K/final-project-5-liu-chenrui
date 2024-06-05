@@ -10,6 +10,32 @@ public class Lawnmower{
   }
   
   void display(){
-    image(LM, x, y); 
+    image(LM, x, y);
+    if(active){
+     x++; 
+    }
+  }
+  
+  boolean getActive(){
+    return active;
+  }
+  
+  void setActive(){
+    active = true; 
+  }
+  
+  int getRow(){
+    int row = (y - 70) / 100;
+    if(row > 4){
+     row = 4; 
+    }
+    if(row < 0){
+     row = 0; 
+    }
+    return row; 
+  }
+  
+  int getX(){
+    return x; 
   }
 }
