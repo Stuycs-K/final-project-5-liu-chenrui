@@ -25,7 +25,7 @@ public class Zombie{
   
   void Move(){
     image(sprite, x, y);
-    if(x > 250 && !eating && walkCD == 0){
+    if(x > 200 && !eating && walkCD == 0){
       x -= Speed;
       walkCD = 10;
     }

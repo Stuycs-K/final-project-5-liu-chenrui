@@ -45,6 +45,8 @@ void setup(){
   lawnmowerList.add(new Lawnmower(150, 270));
   lawnmowerList.add(new Lawnmower(150, 370));
   lawnmowerList.add(new Lawnmower(150, 470));
+  
+  zombieList.add(new NormalZombie());
 }
 
 void draw(){
@@ -54,11 +56,13 @@ void draw(){
   text("Sun: " +  system.getSun(), 0, 40);
   
   for(Lawnmower LM : lawnmowerList){
-    LM.display();
-    if(LM.getActive()){
-      for(Zombie z : zombieList){
-        if(z.getRow() == LM.getRow() && LM.getX() >= z.getX()){
-          z.removeHP(999);
+    if(LM.getFinished() == false){
+      LM.display();
+      if(LM.getActive()){
+        for(Zombie z : zombieList){
+          if(z.getRow() == LM.getRow() && LM.getX() >= z.getX()){
+            z.removeHP(999);
+          }
         }
       }
     }
@@ -182,7 +186,7 @@ void draw(){
       }
       z.Move();
     }
-    if(z.getX() <= 250){
+    if(z.getX() <= 210){
        lawnmowerList.get(z.getRow()).setActive();
     }
   }

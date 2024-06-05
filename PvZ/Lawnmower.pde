@@ -2,6 +2,7 @@ public class Lawnmower{
   private int x,y;
   PImage LM;
   boolean active = false;
+  boolean finished = false;
   
   public Lawnmower(int x, int y){
    LM = loadImage("LawnMower.png");
@@ -12,12 +13,24 @@ public class Lawnmower{
   void display(){
     image(LM, x, y);
     if(active){
-     x++; 
+     x+=5;
+     if(x > 980){
+       active = false;
+       finished = true;
+     }
     }
   }
   
   boolean getActive(){
     return active;
+  }
+  
+  boolean getFinished(){
+    return finished; 
+  }
+  
+  void setFinished(){
+    finished = true;
   }
   
   void setActive(){
