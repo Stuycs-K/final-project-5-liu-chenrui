@@ -78,6 +78,7 @@ void draw(){
   UI.getSFP().onCooldown();
   UI.getPSP().onCooldown();
   UI.getWP().onCooldown();
+  UI.getCBP().onCooldown();
   
   if(waveCooldown == 0){
     for(int i = 0; i < numZomb; i++){
@@ -285,6 +286,17 @@ void mouseClicked(){
       selectedPlant = W;
       selectedPacket = WP;
       walnutList.add(W);
+    }
+  }
+  
+  CherryBombPacket CBP = UI.getCBP();
+  if(mouseX <= CBP.getX() + 80 && mouseX >= CBP.getX() && mouseY <= CBP.getY() + 80 && mouseY >= CBP.getY() && CBP.getCooldown() == 0){
+    CherryBomb CB = CBP.genCherryBomb();
+    if(CB.getCost() <= system.getSun()){
+      selecting = true;
+      selectedPlant = CB;
+      selectedPacket = CBP;
+      //walnutList.add(W);
     }
   }
 
