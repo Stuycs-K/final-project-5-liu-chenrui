@@ -28,14 +28,17 @@ boolean selecting = false;
 int waveCooldown = 10 * 60;
 int numZomb = 1;
 
-boolean alive = true;
+boolean starting = true;
+boolean alive = false;
 PImage losescreen;
+PImage startscreen;
 
 
 void setup(){
   size(1400,600);
   map = loadImage("DayMap.png");
   losescreen = loadImage("gameover.png");
+  startscreen = loadImage("startScreen.jpg");
   
   system = new Currency();
   board = new Board(5, 9);
@@ -51,13 +54,13 @@ void setup(){
   lawnmowerList.add(new Lawnmower(150, 270));
   lawnmowerList.add(new Lawnmower(150, 370));
   lawnmowerList.add(new Lawnmower(150, 470));
-  
-  zombieList.add(new NormalZombie());
 }
 
 void draw(){
+  if(starting){
+    image(startscreen,0,0);
+  }
   if(alive){
-    
     image(map,0,0);
     fill(255);
     textSize(40);
@@ -235,12 +238,20 @@ void draw(){
      selectedPlant.display(mouseX, mouseY); 
     }
   }
-  else{
+  else if(starting == false){
     image(losescreen, 400, 0);
   }
 }
 
 void mouseClicked(){
+  
+  //println(mouseX);
+  //println(mouseY);
+  
+  if(starting && mouseX >= 160 && mouseX <= 360 && mouseY >= 360 && mouseY <= 380){
+    starting = false;
+    alive = true;
+  }
   
   if(mouseX >=250 && mouseX <= 980 && mouseY >= 70 && mouseY <= 570 && selecting){
     int col = (mouseX - 250) / 80;
