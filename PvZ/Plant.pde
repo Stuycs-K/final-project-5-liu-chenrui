@@ -19,6 +19,8 @@ public class Plant{
     this.AtkInterval = atkInterval;
     this.range = range;
     this.sprite = loadImage(link);
+    this.r = -1;
+    this.c = -1;
   }
   
   int getCost(){

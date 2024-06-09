@@ -14,6 +14,7 @@ ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
 ArrayList<Sunflower> sunflowerList = new ArrayList<Sunflower>();
 ArrayList<Peashooter> peashooterList = new ArrayList<Peashooter>();
 ArrayList<Walnut> walnutList = new ArrayList<Walnut>();
+ArrayList<CherryBomb> cherrybombList = new ArrayList<CherryBomb>();
 
 ArrayList<Lawnmower> lawnmowerList = new ArrayList<Lawnmower>();
 
@@ -27,10 +28,15 @@ boolean selecting = false;
 int waveCooldown = 10 * 60;
 int numZomb = 1;
 
+boolean alive = true;
+PImage losescreen;
+
 
 void setup(){
   size(1400,600);
   map = loadImage("DayMap.png");
+  losescreen = loadImage("gameover.png");
+  
   system = new Currency();
   board = new Board(5, 9);
   plantList = board.getPlants();
@@ -50,165 +56,188 @@ void setup(){
 }
 
 void draw(){
-  image(map,0,0);
-  fill(255);
-  textSize(40);
-  text("Sun: " +  system.getSun(), 0, 40);
-  
-  for(Lawnmower LM : lawnmowerList){
-    if(LM.getFinished() == false){
-      LM.display();
-      if(LM.getActive()){
-        for(Zombie z : zombieList){
-          if(z.getRow() == LM.getRow() && LM.getX() >= z.getX()){
-            z.removeHP(999);
+  if(alive){
+    
+    image(map,0,0);
+    fill(255);
+    textSize(40);
+    text("Sun: " +  system.getSun(), 0, 40);
+    
+    for(Lawnmower LM : lawnmowerList){
+      if(LM.getFinished() == false){
+        LM.display();
+        if(LM.getActive()){
+          for(Zombie z : zombieList){
+            if(z.getRow() == LM.getRow() && LM.getX() >= z.getX()){
+              z.removeHP(999);
+            }
           }
         }
       }
     }
-  }
-  
-  fill(#6e3316);
-  rect(0, 50, 120, 300);
-  
-  fill(255);
-  
-  UI.display();
-  
-  UI.getSFP().onCooldown();
-  UI.getPSP().onCooldown();
-  UI.getWP().onCooldown();
-  UI.getCBP().onCooldown();
-  
-  if(waveCooldown == 0){
-    for(int i = 0; i < numZomb; i++){
-      zombieList.add(new NormalZombie());
+    
+    fill(#6e3316);
+    rect(0, 50, 130, 350);
+    
+    fill(255);
+    
+    UI.display();
+    
+    UI.getSFP().onCooldown();
+    UI.getPSP().onCooldown();
+    UI.getWP().onCooldown();
+    UI.getCBP().onCooldown();
+    
+    if(waveCooldown == 0){
+      for(int i = 0; i < numZomb; i++){
+        zombieList.add(new NormalZombie());
+      }
+      waveCooldown = 10 * 60;
+      numZomb++;
     }
-    waveCooldown = 10 * 60;
-    numZomb++;
-  }
-  else if(waveCooldown > 0){
-    waveCooldown--;
-  }
-  
-  
-  for(int r = 0; r < plantList.length; r++){
-    for(int c = 0; c < plantList[0].length; c++){
-      if(plantList[r][c] != null){
-        plantList[r][c].display(250 + c * 80, 90 + r * 100);
-        if(plantList[r][c].getHP() <= 0){
-          plantList[r][c] = null; 
+    else if(waveCooldown > 0){
+      waveCooldown--;
+    }
+    
+    
+    for(int r = 0; r < plantList.length; r++){
+      for(int c = 0; c < plantList[0].length; c++){
+        if(plantList[r][c] != null){
+          plantList[r][c].display(250 + c * 80, 90 + r * 100);
+          if(plantList[r][c].getHP() <= 0){
+            plantList[r][c] = null; 
+          }
         }
       }
     }
-  }
-  
-  for(Peashooter ps : peashooterList){
-    ps.onCooldown();
-    for(Zombie z : zombieList){
-      //println("Pea: " + ps.getR());
-      //println("Zombie: " + z.getRow());
-      if(ps.getR() == z.getRow() && z.getHP() > 0){
-        Pea p = ps.Shoot();
-        if(p != null){
-          p.setActive(true);
-          PeaList.add(p);
+    
+    for(CherryBomb CB : cherrybombList){
+      if(CB.getR() != -1){
+        CB.onCooldown();
+      }
+      if(CB.getCooldown() == 0 && CB.getActive()){
+        for(Zombie z : zombieList){
+          if(z.getRow() >= CB.getR() - 1 && z.getRow() <= CB.getR() + 1 && z.getCol() >= CB.getC() - 1 && z.getCol() <= CB.getC() + 1){
+             z.removeHP(999);
+          }
         }
+        CB.setActive(false);
+        CB.loseHP(999);
       }
     }
-  }
-  
-  for(Pea p : PeaList){
-    if(p != null && p.getActive()){
-      p.display();
+    
+    for(Peashooter ps : peashooterList){
+      ps.onCooldown();
       for(Zombie z : zombieList){
-        if(z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
-          p.damage(z);
-          p.setActive(false);
+        //println("Pea: " + ps.getR());
+        //println("Zombie: " + z.getRow());
+        if(ps.getR() == z.getRow() && z.getHP() > 0){
+          Pea p = ps.Shoot();
+          if(p != null){
+            p.setActive(true);
+            PeaList.add(p);
+          }
         }
       }
     }
-  }
-  
-  for(Sunflower sf : sunflowerList){
-    if(sf.getHP() > 0){
-      Sun s = sf.generateSun();
-      sf.onCooldown();
-      genSunList.add(s);
-    }
-  }
-  
-  for(Sun s : genSunList){
-    if(s != null){
-      s.genSunDisplay(); 
-    }
-  }
-  
-  for(Walnut w : walnutList){
-    if(w.getHP() <= 48 && w.getHP() > 24){
-      w.setSprite("HurtWalnut.png"); 
-    }
-    else if(w.getHP() <= 24){
-      w.setSprite("DyingWalnut.png"); 
-    }
-  }
-  
-  for(Zombie z : zombieList){
-    if(z.getHP() > 0 && z.getHP() <= 4){
-      z.setSprite("injuredNormalZombie.png"); 
-    }
-    if(z.getHP() > 0){
-      z.resetWalkCD();
-      z.resetEatCD();
-      int zX = z.getX();
-      int zY = z.getY();
-      int col = (zX - 250) / 80;
-      if(col > 8){
-       col = 8; 
+    
+    for(Pea p : PeaList){
+      if(p != null && p.getActive()){
+        p.display();
+        for(Zombie z : zombieList){
+          if(z.getHP() > 0 && p.getR() == z.getRow() && p.getX() >= z.getX() && p.getX() <= z.getX() + 50){
+            p.damage(z);
+            p.setActive(false);
+          }
+        }
       }
-      if(col < 0){
-       col = 0; 
-      }
-      int row = (zY - 70) / 100;
-      if(row > 4){
-       row = 4; 
-      }
-      if(row < 0){
-       row = 0; 
-      }
-      
-      if(plantList[row][col] != null){
-        //println("row: " + row);
-        //println("col: " + col);
-        z.Attack(plantList[row][col]);
-      }
-      else{
-        z.setEating(false);
-      }
-      z.Move();
     }
-    if(z.getX() <= 210){
-       lawnmowerList.get(z.getRow()).setActive();
+    
+    for(Sunflower sf : sunflowerList){
+      if(sf.getHP() > 0){
+        Sun s = sf.generateSun();
+        sf.onCooldown();
+        genSunList.add(s);
+      }
+    }
+    
+    for(Sun s : genSunList){
+      if(s != null){
+        s.genSunDisplay(); 
+      }
+    }
+    
+    for(Walnut w : walnutList){
+      if(w.getHP() <= 48 && w.getHP() > 24){
+        w.setSprite("HurtWalnut.png"); 
+      }
+      else if(w.getHP() <= 24){
+        w.setSprite("DyingWalnut.png"); 
+      }
+    }
+    
+    for(Zombie z : zombieList){
+      if(z.getHP() > 0 && z.getHP() <= 4){
+        z.setSprite("injuredNormalZombie.png"); 
+      }
+      if(z.getHP() > 0){
+        z.resetWalkCD();
+        z.resetEatCD();
+        int zX = z.getX();
+        int zY = z.getY();
+        int col = (zX - 250) / 80;
+        if(col > 8){
+         col = 8; 
+        }
+        if(col < 0){
+         col = 0; 
+        }
+        int row = (zY - 70) / 100;
+        if(row > 4){
+         row = 4; 
+        }
+        if(row < 0){
+         row = 0; 
+        }
+        
+        if(plantList[row][col] != null && z.getX() >= plantList[row][col].getX() && z.getX() <= plantList[row][col].getX() + 30){
+          z.Attack(plantList[row][col]);
+        }
+        else{
+          z.setEating(false);
+        }
+        z.Move();
+      }
+      if(z.getX() <= 210 && z.getHP() > 0){
+         if(z.getX() <= 180 && lawnmowerList.get(z.getRow()).getFinished()){
+           alive = false;
+         }
+         else{
+           lawnmowerList.get(z.getRow()).setActive();
+         }
+      }
+    }
+    
+    if(sunCooldown > 0){
+     sunCooldown--; 
+    }
+    
+    if(sunCooldown == 0){
+      sunList.add(new Sun("Sun.png"));
+      sunCooldown = 300;
+    }
+    
+    for(Sun s : sunList){
+     s.display();
+    }
+    
+    if(selecting){
+     selectedPlant.display(mouseX, mouseY); 
     }
   }
-  
-  if(sunCooldown > 0){
-   sunCooldown--; 
+  else{
+    image(losescreen, 400, 0);
   }
-  
-  if(sunCooldown == 0){
-    sunList.add(new Sun("Sun.png"));
-    sunCooldown = 300;
-  }
-  
-  for(Sun s : sunList){
-   s.display();
-  }
-  
-  if(selecting){
-   selectedPlant.display(mouseX, mouseY); 
-  }
-  
 }
 
 void mouseClicked(){
@@ -226,9 +255,6 @@ void mouseClicked(){
       selectedPacket = null;
       selectedPlant = null;
     }
-  else{
-    
-  }
   }
   else{
     selecting = false;
@@ -296,7 +322,7 @@ void mouseClicked(){
       selecting = true;
       selectedPlant = CB;
       selectedPacket = CBP;
-      //walnutList.add(W);
+      cherrybombList.add(CB);
     }
   }
 
