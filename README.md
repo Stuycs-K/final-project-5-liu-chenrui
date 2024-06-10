@@ -22,3 +22,11 @@ To run through the features as fast as possible:
 4. Let a zombie reach the end to the lawnmower.
 5. At this point you should have a nice bunch of zombies. You can blow up a 3x3 radius of zombies with cherry bomb.
 6. Let a zombie reach the end for the game to stop.
+
+## Presentation Link
+
+
+
+## Potential Major Bugs
+
+- After a plant has been eaten such as the peashooter, it's possible that it may continue to shoot peas as a ghost. Just try to plant the peashooters as close to the lawnmowers as possible.
