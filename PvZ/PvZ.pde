@@ -120,7 +120,7 @@ void draw(){
       }
       if(CB.getCooldown() == 0 && CB.getActive()){
         for(Zombie z : zombieList){
-          if(z.getRow() >= CB.getR() - 1 && z.getRow() <= CB.getR() + 1 && z.getCol() >= CB.getC() - 1 && z.getCol() <= CB.getC() + 1){
+          if(z.getRow() >= CB.getR() - 1 && z.getRow() <= CB.getR() + 1 && z.getCol() >= CB.getC() - 2 && z.getCol() <= CB.getC() + 1){
              z.removeHP(999);
           }
         }
@@ -134,7 +134,7 @@ void draw(){
       for(Zombie z : zombieList){
         //println("Pea: " + ps.getR());
         //println("Zombie: " + z.getRow());
-        if(ps.getR() == z.getRow() && z.getHP() > 0){
+        if(ps.getHP() > 0 && ps.getR() == z.getRow() && z.getHP() > 0){
           Pea p = ps.Shoot();
           if(p != null){
             p.setActive(true);

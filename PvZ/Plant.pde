@@ -27,7 +27,7 @@ public class Plant{
     return Cost;
   }
   
-  double getRefresh(){
+  int getRefresh(){
    return refresh; 
   }
   
